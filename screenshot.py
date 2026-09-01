@@ -22,13 +22,22 @@ def parse_water_level_data(html_content, publish_date):
         # 跳过表头行
         for row in rows[3:]:  # 前3行是表头
             cells = row.find_all('td')
-            if len(cells) >= 3:
+            if len(cells) >= 4:
                 station_name = cells[0].get_text(strip=True)
                 
                 # 检查是否为目标站点
                 if station_name in target_stations:
                     observation_time = cells[1].get_text(strip=True)
                     water_level = cells[2].get_text(strip=True)
+                    change_value = cells[3].get_text(strip=True)
+                    
+                    # 将变化值转换为符号
+                    if change_value.startswith('0.000'):
+                        change_symbol = '↑'
+                    elif change_value.startswith('-'):
+                        change_symbol = '↓'
+                    else:
+                        change_symbol = '↑'
                     
                     # 组合完整日期时间
                     full_datetime = f"{publish_date} {observation_time}"
@@ -37,6 +46,7 @@ def parse_water_level_data(html_content, publish_date):
                     results[station_name] = {
                         '站名': station_name,
                         '水位': water_level,
+                        '变化': change_symbol,
                         '时间': full_datetime
                     }
     
@@ -133,6 +143,7 @@ def main():
             data = all_water_data[station_name]
             print(f"站名: {data['站名']}")
             print(f"水位: {data['水位']} 米")
+            print(f"变化: {data['变化']}")
             print(f"时间: {data['时间']}")
             print("-" * 60)
         
