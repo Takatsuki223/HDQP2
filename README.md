@@ -9,9 +9,9 @@
 ## 本地部署
 
 ### 环境要求
-- **Python**
-- **Playwright**
-- **BeautiifulSoup**
+- **Python 3.14+**
+- **Playwright 1.40.0+**
+- **BeautiifulSoup 4.12.2+**
 
 ### 部署操作
 
