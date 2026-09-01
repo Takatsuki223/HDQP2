@@ -10,8 +10,8 @@
 
 ### 环境要求
 - **Python 3.14+**
-- **Playwright 1.40.0+**
-- **BeautiifulSoup 4.12.2+**
+- **Playwright 1.40+**
+- **BeautiifulSoup 4.12+**
 
 ### 部署操作
 
@@ -19,6 +19,9 @@
 ```
 # 复制以下命令到终端执行
 git clone https://gitee.com/takatsuki225/hdqp2.git
+
+#进入目录
+cd/
 ```
 
 **2. 安装依赖**
