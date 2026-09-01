@@ -2,6 +2,232 @@ from playwright.sync_api import sync_playwright
 import time
 from bs4 import BeautifulSoup
 import re
+import json
+from datetime import datetime
+
+
+def load_data():
+    """从JSON文件加载历史数据"""
+    try:
+        with open('water_level_data.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError:
+        return []
+
+
+def save_data(data):
+    """保存数据到JSON文件"""
+    with open('water_level_data.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def generate_html_report(data):
+    """生成HTML可视化报告"""
+    html_content = f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水位数据可视化报告</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <style>
+        body {{
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }}
+        .container {{
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }}
+        h1 {{
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }}
+        .chart-section {{
+            margin-bottom: 40px;
+        }}
+        .chart-container {{
+            position: relative;
+            height: 400px;
+            margin-bottom: 30px;
+        }}
+        .table-section {{
+            margin-top: 40px;
+        }}
+        table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }}
+        th, td {{
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }}
+        th {{
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }}
+        tr:nth-child(even) {{
+            background-color: #f9f9f9;
+        }}
+        tr:hover {{
+            background-color: #f1f1f1;
+        }}
+        .timestamp {{
+            text-align: right;
+            color: #666;
+            font-size: 14px;
+            margin-top: 20px;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>西江流域水位数据可视化报告</h1>
+        
+        <div class="chart-section">
+            <div class="chart-container">
+                <canvas id="waterLevelChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="table-section">
+            <h2>历史数据总表</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>梧州</th>
+                        <th>江口</th>
+                        <th>贵港</th>
+                        <th>武宣</th>
+                        <th>来宾</th>
+                        <th>峦城</th>
+                    </tr>
+                </thead>
+                <tbody>
+"""
+
+    # 按时间排序数据
+    sorted_data = sorted(data, key=lambda x: x['时间'])
+
+    # 添加表格数据
+    for record in sorted_data:
+        station_data = record.get('站点数据', {})
+        html_content += f"""
+                    <tr>
+                        <td>{record['时间']}</td>
+                        <td>{station_data.get('梧州', {}).get('水位', '-')}</td>
+                        <td>{station_data.get('江口', {}).get('水位', '-')}</td>
+                        <td>{station_data.get('贵港', {}).get('水位', '-')}</td>
+                        <td>{station_data.get('武宣', {}).get('水位', '-')}</td>
+                        <td>{station_data.get('来宾', {}).get('水位', '-')}</td>
+                        <td>{station_data.get('峦城', {}).get('水位', '-')}</td>
+                    </tr>
+"""
+
+    # 准备图表数据
+    labels = [record['时间'] for record in sorted_data]
+    stations = ['梧州', '江口', '贵港', '武宣', '来宾', '峦城']
+    colors = [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 205, 86)',
+        'rgb(75, 192, 192)',
+        'rgb(153, 102, 255)',
+        'rgb(255, 159, 64)'
+    ]
+
+    datasets = []
+    for i, station in enumerate(stations):
+        water_levels = []
+        for record in sorted_data:
+            station_data = record.get('站点数据', {})
+            water_level = station_data.get(station, {}).get('水位', 0)
+            # 尝试转换为浮点数，如果失败则使用0
+            try:
+                water_levels.append(float(water_level))
+            except (ValueError, TypeError):
+                water_levels.append(0)
+        
+        datasets.append(f"""
+                {{
+                    label: '{station}',
+                    data: {water_levels},
+                    borderColor: '{colors[i]}',
+                    backgroundColor: '{colors[i]}',
+                    tension: 0.1,
+                    fill: false
+                }}""")
+
+    html_content += f"""
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="timestamp">
+            报告生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}<br>
+            数据记录数: {len(data)} 条
+        </div>
+    </div>
+    
+    <script>
+        const ctx = document.getElementById('waterLevelChart').getContext('2d');
+        new Chart(ctx, {{
+            type: 'line',
+            data: {{
+                labels: {json.dumps(labels)},
+                datasets: [{','.join(datasets)}]
+            }},
+            options: {{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {{
+                    title: {{
+                        display: true,
+                        text: '各站点水位变化趋势图',
+                        font: {{
+                            size: 18
+                        }}
+                    }},
+                    legend: {{
+                        position: 'top'
+                    }}
+                }},
+                scales: {{
+                    y: {{
+                        title: {{
+                            display: true,
+                            text: '水位 (米)'
+                        }}
+                    }},
+                    x: {{
+                        title: {{
+                            display: true,
+                            text: '时间'
+                        }}
+                    }}
+                }}
+            }}
+        }});
+    </script>
+</body>
+</html>
+"""
+
+    with open('water_level_report.html', 'w', encoding='utf-8') as f:
+        f.write(html_content)
 
 
 def parse_water_level_data(html_content, publish_date):
@@ -146,6 +372,42 @@ def main():
             print(f"变化: {data['变化']}")
             print(f"时间: {data['时间']}")
             print("-" * 60)
+        
+        # 加载历史数据
+        print("\n正在加载历史数据...")
+        historical_data = load_data()
+        
+        # 检查是否已存在相同时间的数据
+        new_data_time = list(all_water_data.values())[0]['时间'] if all_water_data else None
+        existing_index = -1
+        if new_data_time:
+            for i, record in enumerate(historical_data):
+                if record['时间'] == new_data_time:
+                    existing_index = i
+                    break
+        
+        # 添加或更新数据
+        if new_data_time:
+            record_data = {
+                '时间': new_data_time,
+                '站点数据': all_water_data
+            }
+            
+            if existing_index >= 0:
+                print(f"更新时间 {new_data_time} 的数据")
+                historical_data[existing_index] = record_data
+            else:
+                print(f"添加新的时间数据: {new_data_time}")
+                historical_data.append(record_data)
+        
+        # 保存数据
+        save_data(historical_data)
+        print(f"数据已保存，当前共有 {len(historical_data)} 条记录")
+        
+        # 生成HTML报告
+        print("\n正在生成HTML可视化报告...")
+        generate_html_report(historical_data)
+        print("报告已生成: water_level_report.html")
         
         # 等待几秒查看效果
         time.sleep(3)
