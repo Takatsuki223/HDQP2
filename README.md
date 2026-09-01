@@ -17,6 +17,8 @@
 
 **1. 克隆项目**
 ```
+# 复制以下命令到终端执行
+git clone https://gitee.com/takatsuki225/hdqp2.git
 ```
 
 **2. 安装依赖**
