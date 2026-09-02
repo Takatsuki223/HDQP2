@@ -63,6 +63,38 @@
             font-size: 14px;
             margin-top: 20px;
         }
+        .status-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .status-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+        .status-label {
+            font-size: 14px;
+            color: #666;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .status-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status-red {
+            color: #dc3545;
+        }
+        .status-blue {
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
@@ -72,6 +104,22 @@
         <div class="chart-section">
             <div class="chart-container">
                 <canvas id="waterLevelChart"></canvas>
+            </div>
+        </div>
+
+        
+        <div class="status-section">
+            <div class="status-item">
+                <span class="status-label">上游整体情况：</span>
+                <span class="status-value status-blue">
+                    水位明显下降
+                </span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">近日梧州水位预报：</span>
+                <span class="status-value status-blue">
+                    水位明显下降
+                </span>
             </div>
         </div>
         
@@ -126,7 +174,7 @@
         </div>
         
         <div class="timestamp">
-            报告生成时间: 2026-09-02 10:46:10<br>
+            报告生成时间: 2026-09-02 14:24:36<br>
             数据记录数: 3 条
         </div>
     </div>
