@@ -1,20 +1,42 @@
-# HDQP2
+# 水文数据查询程序2（Hydrological data query program2）
+一个基于Python + Playwright + BeautifulSoup + ECharts的便携化河道水位数据爬取与可视化展示分析程序。
 
-#### 介绍
-水文数据查询程序2
+## 主要功能
+- **1**：
+- **2**：
+- **3**：
 
-#### 软件架构
-软件架构说明
+## 本地部署
 
-#### 安装教程
+### 环境要求
+- **Python 3.14+**
+- **Playwright 1.40+**
+- **BeautiifulSoup 4.12+**
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+### 部署操作
 
-#### 使用说明
+**1. 克隆项目**
+```
+# 复制以下命令到终端执行
+git clone https://gitee.com/takatsuki225/hdqp2.git
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#进入目录
+cd/
+```
+
+**2. 安装依赖**
+```
+# 安装依赖
+pip install -r requirements.txt
+
+# 安装Playwright浏览器驱动
+playwright install chromium
+```
+**3. 启动程序**
+```
+# 运行脚本
+python screenshot.py
+```
+
+## 项目架构
 
