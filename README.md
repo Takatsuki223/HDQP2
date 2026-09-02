@@ -1,5 +1,5 @@
 # 水文数据查询程序2（Hydrological data query program2）
-一个基于**Python + Playwright + BeautifulSoup + ECharts**的便携化河道水位数据爬取与可视化展示分析程序。
+一个基于**Python + Playwright + BeautifulSoup + ECharts**的便携化河道水位数据爬取与可视化展示分析程序。  
 供**梧州仓码**同事使用，快速查询梧州航道水位信息，为船舶调度提供依据。
 
 ## 主要功能
