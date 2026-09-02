@@ -257,13 +257,15 @@ def parse_water_level_data(html_content, publish_date):
                     water_level = cells[2].get_text(strip=True)
                     change_value = cells[3].get_text(strip=True)
                     
-                    # 将变化值转换为符号
-                    if change_value.startswith('0.000'):
-                        change_symbol = '↑'
-                    elif change_value.startswith('-'):
-                        change_symbol = '↓'
-                    else:
-                        change_symbol = '↑'
+                    # 将变化值转换为数字：1表示上升，0表示持平或下降
+                    try:
+                        change_num = float(change_value)
+                        if change_num > 0:
+                            change_value_num = 1  # 上升
+                        else:
+                            change_value_num = 0  # 持平或下降
+                    except (ValueError, TypeError):
+                        change_value_num = 0  # 无法解析时默认为0
                     
                     # 组合完整日期时间
                     full_datetime = f"{publish_date} {observation_time}"
@@ -272,7 +274,7 @@ def parse_water_level_data(html_content, publish_date):
                     results[station_name] = {
                         '站名': station_name,
                         '水位': water_level,
-                        '变化': change_symbol,
+                        '变化': change_value_num,
                         '时间': full_datetime
                     }
     
@@ -303,12 +305,12 @@ def main():
         page.screenshot(path=screenshot_path)
         print(f"列表页截图已保存到: {screenshot_path}")
         
-        # 获取前3条新闻链接
+        # 获取前4条新闻链接
         links = page.locator('.newsList li')
         link_count = links.count()
         
         # 只处理前3条或实际存在的链接数
-        num_links = min(3, link_count)
+        num_links = min(4, link_count)
         
         # 使用字典存储所有数据，站名为键
         all_water_data = {}
@@ -367,9 +369,10 @@ def main():
         
         for station_name in sorted(all_water_data.keys()):
             data = all_water_data[station_name]
+            change_desc = "上升" if data['变化'] == 1 else "持平或下降"
             print(f"站名: {data['站名']}")
             print(f"水位: {data['水位']} 米")
-            print(f"变化: {data['变化']}")
+            print(f"变化: {data['变化']} ({change_desc})")
             print(f"时间: {data['时间']}")
             print("-" * 60)
         

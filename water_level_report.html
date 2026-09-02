@@ -67,7 +67,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>广西壮族自治区水位数据可视化报告</h1>
+        <h1>西江流域水位数据可视化报告</h1>
         
         <div class="chart-section">
             <div class="chart-container">
@@ -92,6 +92,16 @@
                 <tbody>
 
                     <tr>
+                        <td>2026-08-31 08:00</td>
+                        <td>12.81</td>
+                        <td>27.08</td>
+                        <td>44.254</td>
+                        <td>59.09</td>
+                        <td>59.94</td>
+                        <td>64.242</td>
+                    </tr>
+
+                    <tr>
                         <td>2026-09-01 08:00</td>
                         <td>12.72</td>
                         <td>26.32</td>
@@ -101,13 +111,23 @@
                         <td>62.939</td>
                     </tr>
 
+                    <tr>
+                        <td>2026-09-02 8:00</td>
+                        <td>11.36</td>
+                        <td>24.43</td>
+                        <td>36.88</td>
+                        <td>58.48</td>
+                        <td>59.13</td>
+                        <td>62.306</td>
+                    </tr>
+
                 </tbody>
             </table>
         </div>
         
         <div class="timestamp">
-            报告生成时间: 2026-09-01 16:48:28<br>
-            数据记录数: 1 条
+            报告生成时间: 2026-09-02 10:46:10<br>
+            数据记录数: 3 条
         </div>
     </div>
     
@@ -116,11 +136,11 @@
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ["2026-09-01 08:00"],
+                labels: ["2026-08-31 08:00", "2026-09-01 08:00", "2026-09-02 8:00"],
                 datasets: [
                 {
                     label: '梧州',
-                    data: [12.72],
+                    data: [12.81, 12.72, 11.36],
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgb(255, 99, 132)',
                     tension: 0.1,
@@ -128,7 +148,7 @@
                 },
                 {
                     label: '江口',
-                    data: [26.32],
+                    data: [27.08, 26.32, 24.43],
                     borderColor: 'rgb(54, 162, 235)',
                     backgroundColor: 'rgb(54, 162, 235)',
                     tension: 0.1,
@@ -136,7 +156,7 @@
                 },
                 {
                     label: '贵港',
-                    data: [41.645],
+                    data: [44.254, 41.645, 36.88],
                     borderColor: 'rgb(255, 205, 86)',
                     backgroundColor: 'rgb(255, 205, 86)',
                     tension: 0.1,
@@ -144,7 +164,7 @@
                 },
                 {
                     label: '武宣',
-                    data: [59.12],
+                    data: [59.09, 59.12, 58.48],
                     borderColor: 'rgb(75, 192, 192)',
                     backgroundColor: 'rgb(75, 192, 192)',
                     tension: 0.1,
@@ -152,7 +172,7 @@
                 },
                 {
                     label: '来宾',
-                    data: [59.39],
+                    data: [59.94, 59.39, 59.13],
                     borderColor: 'rgb(153, 102, 255)',
                     backgroundColor: 'rgb(153, 102, 255)',
                     tension: 0.1,
@@ -160,7 +180,7 @@
                 },
                 {
                     label: '峦城',
-                    data: [62.939],
+                    data: [64.242, 62.939, 62.306],
                     borderColor: 'rgb(255, 159, 64)',
                     backgroundColor: 'rgb(255, 159, 64)',
                     tension: 0.1,
