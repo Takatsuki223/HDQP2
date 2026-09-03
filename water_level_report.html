@@ -34,7 +34,7 @@
             margin-bottom: 30px;
         }
         .table-section {
-            margin-top: 40px;
+            margin-top: 20px;
         }
         table {
             width: 100%;
@@ -47,7 +47,7 @@
             text-align: center;
         }
         th {
-            background-color: #4CAF50;
+            background-color: #3a71cb;
             color: white;
             font-weight: bold;
         }
@@ -74,9 +74,7 @@
             align-items: center;
         }
         .status-item {
-            
-            display: flex;
-            align-items: center;
+            align-items: self-end;
         }
         .status-label {
             font-size: 20px;
@@ -122,7 +120,7 @@
                 </span>
             </div>
             <div class="status-item">
-                <span class="status-label">近日梧州水位预报：</span>
+                <span class="status-label">近2天梧州水位预报：</span>
                 <span class="status-value status-red">
                     水位明显上升 ⏫︎
                 </span>
@@ -146,7 +144,7 @@
                 <tbody>
 
                     <tr>
-                        <td>2026-08-31 08:00</td>
+                        <td>2026-08-31 8:00</td>
                         <td>12.81</td>
                         <td>27.08</td>
                         <td>44.254</td>
@@ -156,7 +154,7 @@
                     </tr>
 
                     <tr>
-                        <td>2026-09-01 08:00</td>
+                        <td>2026-09-01 8:00</td>
                         <td>12.72</td>
                         <td>26.32</td>
                         <td>41.645</td>
@@ -190,7 +188,7 @@
         </div>
         
         <div class="timestamp">
-            报告生成时间: 2026-09-03 10:35:16<br>
+            报告生成时间: 2026-09-03 14:53:33<br>
             数据记录数: 4 条
         </div>
     </div>
@@ -200,7 +198,7 @@
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ["2026-08-31 08:00", "2026-09-01 08:00", "2026-09-02 8:00", "2026-09-03 8:00"],
+                labels: ["2026-08-31 8:00", "2026-09-01 8:00", "2026-09-02 8:00", "2026-09-03 8:00"],
                 datasets: [
                 {
                     label: '梧州',
