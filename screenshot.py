@@ -37,15 +37,15 @@ def generate_html_report(data):
             font-family: 'Microsoft YaHei', Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }}
         .container {{
-            max-width: 1200px;
+            max-width: 1350px;
             margin: 0 auto;
             background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 3px 3px rgba(0,0,0,0.3);
         }}
         h1 {{
             text-align: center;
@@ -61,7 +61,7 @@ def generate_html_report(data):
             margin-bottom: 30px;
         }}
         .table-section {{
-            margin-top: 40px;
+            margin-top: 20px;
         }}
         table {{
             width: 100%;
@@ -74,7 +74,7 @@ def generate_html_report(data):
             text-align: center;
         }}
         th {{
-            background-color: #4CAF50;
+            background-color: #3a71cb;
             color: white;
             font-weight: bold;
         }}
@@ -101,9 +101,7 @@ def generate_html_report(data):
             align-items: center;
         }}
         .status-item {{
-            flex: 1;
-            display: flex;
-            align-items: center;
+            align-items: self-end;
         }}
         .status-label {{
             font-size: 20px;
@@ -142,8 +140,9 @@ def generate_html_report(data):
     if sorted_data:
         latest_upstream_color = sorted_data[-1].get('上游情况', {}).get('颜色', 'blue')
         latest_upstream_desc = sorted_data[-1].get('上游情况', {}).get('描述', '暂无数据')
-        latest_wuzhou_color = sorted_data[-1].get('梧州预报', {}).get('颜色', 'blue')
-        latest_wuzhou_desc = sorted_data[-1].get('梧州预报', {}).get('描述', '暂无数据')
+        latest_wuzhou_color = sorted_data[-1].get('梧州情况', {}).get('颜色', 'blue')
+        latest_wuzhou_desc = sorted_data[-1].get('梧州情况', {}).get('描述', '暂无数据')
+        latest_wuzhou_data = sorted_data[-1].get('梧州情况', {}).get('最新水位', '0')
     else:
         latest_upstream_color = 'blue'
         latest_upstream_desc = '暂无数据'
@@ -161,9 +160,15 @@ def generate_html_report(data):
                 </span>
             </div>
             <div class="status-item">
-                <span class="status-label">近日梧州水位预报：</span>
+                <span class="status-label">今日梧州水位：</span>
                 <span class="status-value status-{latest_wuzhou_color}">
-                    {latest_wuzhou_desc}
+                    {latest_wuzhou_data} {latest_wuzhou_desc}
+                </span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">近2天梧州水位预报：</span>
+                <span class="status-value status-{latest_upstream_color}">
+                    {latest_upstream_desc}
                 </span>
             </div>
         </div>
@@ -463,30 +468,28 @@ def main():
             
             # 根据上游变化和值决定整体情况
             if upstream_change_sum == 0:
-                upstream_status = "水位明显下降"
+                upstream_status = "水位明显下降 ⏬︎"
                 upstream_color = "blue"
             elif upstream_change_sum == 1:
-                upstream_status = "水位下降"
+                upstream_status = "水位下降 ▼"
                 upstream_color = "blue"
             elif upstream_change_sum == 2:
-                upstream_status = "水位略有上升"
+                upstream_status = "水位略有上升 ▲"
                 upstream_color = "red"
             else:  # 3或4
-                upstream_status = "水位明显上升"
+                upstream_status = "水位明显上升 ⏫︎"
                 upstream_color = "red"
             
-            # 梧州水位预报
+            # 梧州当前情况（单独标出用）
             wuzhou_change = all_water_data.get('梧州', {}).get('变化', 0)
             if wuzhou_change == 1:
-                #wuzhou_status = "水位上升"
-                #wuzhou_color = "red"
-                wuzhou_status = upstream_status
-                wuzhou_color = upstream_color
+                wuzhou_status = "▲"
+                wuzhou_color = "red"
             else:
-                #wuzhou_status = "水位下降"
-                #wuzhou_color = "blue"
-                wuzhou_status = upstream_status
-                wuzhou_color = upstream_color
+                wuzhou_status = "▼"
+                wuzhou_color = "blue"
+
+            wuzhou_newdata = all_water_data.get('梧州', {}).get('水位', 0)
             
             record_data = {
                 '时间': new_data_time,
@@ -496,15 +499,17 @@ def main():
                     '颜色': upstream_color,
                     '变化和': upstream_change_sum
                 },
-                '梧州预报': {
+                '梧州情况': {
                     '描述': wuzhou_status,
                     '颜色': wuzhou_color,
-                    '变化值': wuzhou_change
+                    '变化值': wuzhou_change,
+                    '最新水位': wuzhou_newdata
                 }
             }
             
             print(f"\n上游整体情况: {upstream_status} (变化和: {upstream_change_sum})")
-            print(f"梧州水位预报: {wuzhou_status}")
+            print(f"梧州水位预报: {upstream_status}")
+            print(f"梧州水位情况: {wuzhou_status} 最新水位：{wuzhou_newdata}")
             
             if existing_index >= 0:
                 print(f"更新时间 {new_data_time} 的数据")
