@@ -10,15 +10,15 @@
             font-family: 'Microsoft YaHei', Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         .container {
-            max-width: 1200px;
+            max-width: 1350px;
             margin: 0 auto;
             background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 3px 3px rgba(0,0,0,0.3);
         }
         h1 {
             text-align: center;
@@ -65,29 +65,29 @@
         }
         .status-section {
             background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 30px 0;
-            border: 1px solid #ddd;
+            padding: 10px 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #ddd;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .status-item {
-            flex: 1;
+            
             display: flex;
             align-items: center;
         }
         .status-label {
-            font-size: 14px;
+            font-size: 20px;
             color: #666;
-            margin-right: 10px;
+            margin-right: 5px;
             font-weight: bold;
         }
         .status-value {
-            font-size: 24px;
+            font-size: 40px;
             font-weight: bold;
-            margin-left: 10px;
+            margin-left: 5px;
         }
         .status-red {
             color: #dc3545;
@@ -111,14 +111,20 @@
         <div class="status-section">
             <div class="status-item">
                 <span class="status-label">上游整体情况：</span>
+                <span class="status-value status-red">
+                    水位明显上升 ⏫︎
+                </span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">今日梧州水位：</span>
                 <span class="status-value status-blue">
-                    水位明显下降
+                    8.12 ▼
                 </span>
             </div>
             <div class="status-item">
                 <span class="status-label">近日梧州水位预报：</span>
-                <span class="status-value status-blue">
-                    水位明显下降
+                <span class="status-value status-red">
+                    水位明显上升 ⏫︎
                 </span>
             </div>
         </div>
@@ -169,13 +175,23 @@
                         <td>62.306</td>
                     </tr>
 
+                    <tr>
+                        <td>2026-09-03 8:00</td>
+                        <td>8.12</td>
+                        <td>22.41</td>
+                        <td>33.76</td>
+                        <td>58.93</td>
+                        <td>59.34</td>
+                        <td>62.511</td>
+                    </tr>
+
                 </tbody>
             </table>
         </div>
         
         <div class="timestamp">
-            报告生成时间: 2026-09-02 14:24:36<br>
-            数据记录数: 3 条
+            报告生成时间: 2026-09-03 10:35:16<br>
+            数据记录数: 4 条
         </div>
     </div>
     
@@ -184,11 +200,11 @@
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ["2026-08-31 08:00", "2026-09-01 08:00", "2026-09-02 8:00"],
+                labels: ["2026-08-31 08:00", "2026-09-01 08:00", "2026-09-02 8:00", "2026-09-03 8:00"],
                 datasets: [
                 {
                     label: '梧州',
-                    data: [12.81, 12.72, 11.36],
+                    data: [12.81, 12.72, 11.36, 8.12],
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgb(255, 99, 132)',
                     tension: 0.1,
@@ -196,7 +212,7 @@
                 },
                 {
                     label: '江口',
-                    data: [27.08, 26.32, 24.43],
+                    data: [27.08, 26.32, 24.43, 22.41],
                     borderColor: 'rgb(54, 162, 235)',
                     backgroundColor: 'rgb(54, 162, 235)',
                     tension: 0.1,
@@ -204,7 +220,7 @@
                 },
                 {
                     label: '贵港',
-                    data: [44.254, 41.645, 36.88],
+                    data: [44.254, 41.645, 36.88, 33.76],
                     borderColor: 'rgb(255, 205, 86)',
                     backgroundColor: 'rgb(255, 205, 86)',
                     tension: 0.1,
@@ -212,7 +228,7 @@
                 },
                 {
                     label: '武宣',
-                    data: [59.09, 59.12, 58.48],
+                    data: [59.09, 59.12, 58.48, 58.93],
                     borderColor: 'rgb(75, 192, 192)',
                     backgroundColor: 'rgb(75, 192, 192)',
                     tension: 0.1,
@@ -220,7 +236,7 @@
                 },
                 {
                     label: '来宾',
-                    data: [59.94, 59.39, 59.13],
+                    data: [59.94, 59.39, 59.13, 59.34],
                     borderColor: 'rgb(153, 102, 255)',
                     backgroundColor: 'rgb(153, 102, 255)',
                     tension: 0.1,
@@ -228,7 +244,7 @@
                 },
                 {
                     label: '峦城',
-                    data: [64.242, 62.939, 62.306],
+                    data: [64.242, 62.939, 62.306, 62.511],
                     borderColor: 'rgb(255, 159, 64)',
                     backgroundColor: 'rgb(255, 159, 64)',
                     tension: 0.1,
