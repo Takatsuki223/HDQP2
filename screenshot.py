@@ -43,14 +43,13 @@ def generate_html_report(data):
             max-width: 1350px;
             margin: 0 auto;
             background-color: white;
-            padding: 20px;
+            padding: 5px 20px;
             border-radius: 10px;
             box-shadow: 2px 2px 3px 3px rgba(0,0,0,0.3);
         }}
         h1 {{
             text-align: center;
             color: #333;
-            margin-bottom: 30px;
         }}
         .chart-section {{
             margin-bottom: 40px;
@@ -77,6 +76,7 @@ def generate_html_report(data):
             background-color: #3a71cb;
             color: white;
             font-weight: bold;
+            font-size: 18px;
         }}
         tr:nth-child(even) {{
             background-color: #f9f9f9;
