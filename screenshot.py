@@ -120,6 +120,58 @@ def generate_html_report(data):
         .status-blue {{
             color: #007bff;
         }}
+        .image-section {{
+            max-width: 90%;
+            margin: 0px auto;
+            text-align: center;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
+        }}
+        .image-section img {{
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+            margin: 0 auto;
+        }}
+        .image-overlay-text {{
+            transform: translateX(-50%);
+            font-size: 250%;
+            font-weight: bold;
+            z-index: 10;
+            white-space: nowrap;
+        }}
+        .wz {{
+            position: absolute;
+            top: 32%;
+            left: 87%;
+        }}
+        .jk {{
+            position: absolute;
+            top: 52%;
+            left: 71%;  
+        }}
+        .wx {{
+            position: absolute;
+            top: 10%;
+            left: 40%;
+        }}
+        .lb {{
+            position: absolute;
+            top: 10%;
+            left: 11%;
+        }}
+        .lc {{
+            position: absolute;
+            top: 55%;
+            left: 13%;
+        }}
+        .gg {{
+            position: absolute;
+            top: 55%;
+            left: 47%;
+        }}
     </style>
 </head>
 <body>
@@ -144,6 +196,26 @@ def generate_html_report(data):
         latest_wuzhou_color = sorted_data[-1].get('站点数据',{}).get('梧州', {}).get('颜色', 'blue')
         latest_wuzhou_desc = sorted_data[-1].get('站点数据',{}).get('梧州', {}).get('情况', '暂无数据')
         latest_wuzhou_data = sorted_data[-1].get('站点数据',{}).get('梧州', {}).get('水位', '0')
+
+        latest_jiangkou_color = sorted_data[-1].get('站点数据',{}).get('江口', {}).get('颜色', 'blue')
+        latest_jiangkou_desc = sorted_data[-1].get('站点数据',{}).get('江口', {}).get('情况', '暂无数据')
+        latest_jiangkou_data = sorted_data[-1].get('站点数据',{}).get('江口', {}).get('水位', '0')
+
+        latest_wuxuan_color = sorted_data[-1].get('站点数据',{}).get('武宣', {}).get('颜色', 'blue')
+        latest_wuxuan_desc = sorted_data[-1].get('站点数据',{}).get('武宣', {}).get('情况', '暂无数据')
+        latest_wuxuan_data = sorted_data[-1].get('站点数据',{}).get('武宣', {}).get('水位', '0')
+
+        latest_laibing_color = sorted_data[-1].get('站点数据',{}).get('来宾', {}).get('颜色', 'blue')
+        latest_laibing_desc = sorted_data[-1].get('站点数据',{}).get('来宾', {}).get('情况', '暂无数据')
+        latest_laibing_data = sorted_data[-1].get('站点数据',{}).get('来宾', {}).get('水位', '0')
+
+        latest_luancheng_color = sorted_data[-1].get('站点数据',{}).get('峦城', {}).get('颜色', 'blue')
+        latest_luancheng_desc = sorted_data[-1].get('站点数据',{}).get('峦城', {}).get('情况', '暂无数据')
+        latest_luancheng_data = sorted_data[-1].get('站点数据',{}).get('峦城', {}).get('水位', '0')
+
+        latest_guigang_color = sorted_data[-1].get('站点数据',{}).get('贵港', {}).get('颜色', 'blue')
+        latest_guigang_desc = sorted_data[-1].get('站点数据',{}).get('贵港', {}).get('情况', '暂无数据')
+        latest_guigang_data = sorted_data[-1].get('站点数据',{}).get('贵港', {}).get('水位', '0')
     else:
         latest_upstream_color = 'blue'
         latest_upstream_desc = '暂无数据'
@@ -172,6 +244,22 @@ def generate_html_report(data):
                     {latest_upstream_desc}
                 </span>
             </div>
+        </div>
+        
+        <div class="image-section">
+            <div class="image-overlay-text wz status-{latest_wuzhou_color}">{latest_wuzhou_data}m{latest_wuzhou_desc}</div>
+            <div class="image-overlay-text status-{latest_wuzhou_color}" style="position: absolute; top: 41.4%; left: 78%;">======</div>
+            <div class="image-overlay-text jk status-{latest_jiangkou_color}">{latest_jiangkou_data}m{latest_jiangkou_desc}</div>
+            <div class="image-overlay-text status-{latest_jiangkou_color}" style="position: absolute; top: 41.4%; left: 65.2%;">===</div>
+            <div class="image-overlay-text wx status-{latest_wuxuan_color}">{latest_wuxuan_data}m{latest_wuxuan_desc}</div>
+            <div class="image-overlay-text status-{latest_wuxuan_color}" style="position: absolute; top: 18.9%; left: 23.2%;">===========</div>
+            <div class="image-overlay-text lb status-{latest_laibing_color}">{latest_laibing_data}m{latest_laibing_desc}</div>
+            <div class="image-overlay-text status-{latest_laibing_color}" style="position: absolute; top: 18.9%; left: 4%;">===</div>
+            <div class="image-overlay-text lc status-{latest_luancheng_color}">{latest_luancheng_data}m{latest_luancheng_desc}</div>
+            <div class="image-overlay-text status-{latest_luancheng_color}" style="position: absolute; top: 63.8%; left: 6%;">====</div>
+            <div class="image-overlay-text gg status-{latest_guigang_color}">{latest_guigang_data}m{latest_guigang_desc}</div>
+            <div class="image-overlay-text status-{latest_guigang_color}" style="position: absolute; top: 63.8%; left: 28.5%;">============</div>
+            <img src="river.png" alt="西江流域图">
         </div>
         
         <div class="table-section">

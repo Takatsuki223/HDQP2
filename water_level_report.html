@@ -16,14 +16,13 @@
             max-width: 1350px;
             margin: 0 auto;
             background-color: white;
-            padding: 20px;
+            padding: 5px 20px;
             border-radius: 10px;
             box-shadow: 2px 2px 3px 3px rgba(0,0,0,0.3);
         }
         h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 30px;
         }
         .chart-section {
             margin-bottom: 40px;
@@ -94,6 +93,58 @@
         .status-blue {
             color: #007bff;
         }
+        .image-section {
+            max-width: 90%;
+            margin: 0px auto;
+            text-align: center;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
+        }
+        .image-section img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+            margin: 0 auto;
+        }
+        .image-overlay-text {
+            transform: translateX(-50%);
+            font-size: 40px;
+            font-weight: bold;
+            z-index: 10;
+            white-space: nowrap;
+        }
+        .wz {
+            position: absolute;
+            top: 32%;
+            left: 87%;
+        }
+        .jk {
+            position: absolute;
+            top: 52%;
+            left: 73%;  
+        }
+        .wx {
+            position: absolute;
+            top: 10%;
+            left: 40%;
+        }
+        .lb {
+            position: absolute;
+            top: 10%;
+            left: 11%;
+        }
+        .lc {
+            position: absolute;
+            top: 55%;
+            left: 13%;
+        }
+        .gg {
+            position: absolute;
+            top: 55%;
+            left: 47%;
+        }
     </style>
 </head>
 <body>
@@ -126,6 +177,22 @@
                     水位略有上升 ▲
                 </span>
             </div>
+        </div>
+        
+        <div class="image-section">
+            <div class="image-overlay-text wz status-blue">5.42m▼</div>
+            <div class="image-overlay-text status-blue" style="position: absolute; top: 41.4%; left: 78%;">=====</div>
+            <div class="image-overlay-text jk status-blue">21.67m▼</div>
+            <div class="image-overlay-text status-blue" style="position: absolute; top: 41.4%; left: 65.2%;">===</div>
+            <div class="image-overlay-text wx status-red">59.48m▲</div>
+            <div class="image-overlay-text status-red" style="position: absolute; top: 18.9%; left: 23.2%;">===========</div>
+            <div class="image-overlay-text lb status-red">59.57m▲</div>
+            <div class="image-overlay-text status-red" style="position: absolute; top: 18.9%; left: 4%;">===</div>
+            <div class="image-overlay-text lc status-blue">62.181m▼</div>
+            <div class="image-overlay-text status-blue" style="position: absolute; top: 63.8%; left: 6%;">===</div>
+            <div class="image-overlay-text gg status-blue">33.35m▼</div>
+            <div class="image-overlay-text status-blue" style="position: absolute; top: 63.8%; left: 28.5%;">==========</div>
+            <img src="river.png" alt="西江流域图">
         </div>
         
         <div class="table-section">
@@ -199,7 +266,7 @@
         </div>
         
         <div class="timestamp">
-            报告生成时间: 2026-09-04 09:50:00<br>
+            报告生成时间: 2026-09-04 15:28:24<br>
             数据记录数: 5 条
         </div>
     </div>
