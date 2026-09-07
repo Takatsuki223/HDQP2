@@ -14,6 +14,7 @@
         }
         .container {
             max-width: 1350px;
+            min-width: 1350px;
             margin: 0 auto;
             background-color: white;
             padding: 5px 20px;
@@ -23,14 +24,15 @@
         h1 {
             text-align: center;
             color: #333;
+            margin: 0px;
         }
         .chart-section {
-            margin-bottom: 40px;
+            margin-bottom: 0px;
         }
         .chart-container {
             position: relative;
             height: 400px;
-            margin-bottom: 30px;
+            margin-bottom: 0px;
         }
         .table-section {
             margin-top: 20px;
@@ -65,13 +67,15 @@
         }
         .status-section {
             background-color: #f8f9fa;
-            padding: 10px 30px;
+            padding: 15px 30px;
             border-radius: 10px;
             margin: 20px 0;
             border: 2px solid #ddd;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         .status-item {
             align-items: self-end;
@@ -110,7 +114,7 @@
         }
         .image-overlay-text {
             transform: translateX(-50%);
-            font-size: 40px;
+            font-size: 250%;
             font-weight: bold;
             z-index: 10;
             white-space: nowrap;
@@ -123,7 +127,7 @@
         .jk {
             position: absolute;
             top: 52%;
-            left: 73%;  
+            left: 71%;  
         }
         .wx {
             position: absolute;
@@ -162,36 +166,36 @@
             <div class="status-item">
                 <span class="status-label">上游整体情况：</span>
                 <span class="status-value status-red">
-                    水位略有上升 ▲
+                    水位上升▲
                 </span>
             </div>
             <div class="status-item">
                 <span class="status-label">今日梧州水位：</span>
                 <span class="status-value status-blue">
-                    5.42 ▼
+                    5.69m▼
                 </span>
             </div>
             <div class="status-item">
                 <span class="status-label">近2天梧州水位预报：</span>
-                <span class="status-value status-red">
-                    水位略有上升 ▲
+                <span class="status-value status-blue">
+                    5.54~5.84m 预计水位变化不大 上下小幅波动    
                 </span>
             </div>
         </div>
         
         <div class="image-section">
-            <div class="image-overlay-text wz status-blue">5.42m▼</div>
-            <div class="image-overlay-text status-blue" style="position: absolute; top: 41.4%; left: 78%;">=====</div>
-            <div class="image-overlay-text jk status-blue">21.67m▼</div>
+            <div class="image-overlay-text wz status-blue">5.69m▼</div>
+            <div class="image-overlay-text status-blue" style="position: absolute; top: 41.4%; left: 78%;">======</div>
+            <div class="image-overlay-text jk status-blue">21.94m▼</div>
             <div class="image-overlay-text status-blue" style="position: absolute; top: 41.4%; left: 65.2%;">===</div>
-            <div class="image-overlay-text wx status-red">59.48m▲</div>
+            <div class="image-overlay-text wx status-red">59.50m▲</div>
             <div class="image-overlay-text status-red" style="position: absolute; top: 18.9%; left: 23.2%;">===========</div>
-            <div class="image-overlay-text lb status-red">59.57m▲</div>
+            <div class="image-overlay-text lb status-red">59.77m▲</div>
             <div class="image-overlay-text status-red" style="position: absolute; top: 18.9%; left: 4%;">===</div>
-            <div class="image-overlay-text lc status-blue">62.181m▼</div>
-            <div class="image-overlay-text status-blue" style="position: absolute; top: 63.8%; left: 6%;">===</div>
-            <div class="image-overlay-text gg status-blue">33.35m▼</div>
-            <div class="image-overlay-text status-blue" style="position: absolute; top: 63.8%; left: 28.5%;">==========</div>
+            <div class="image-overlay-text lc status-red">62.181m▲</div>
+            <div class="image-overlay-text status-red" style="position: absolute; top: 63.8%; left: 6%;">====</div>
+            <div class="image-overlay-text gg status-blue">33.16m▼</div>
+            <div class="image-overlay-text status-blue" style="position: absolute; top: 63.8%; left: 28.5%;">============</div>
             <img src="river.png" alt="西江流域图">
         </div>
         
@@ -252,7 +256,7 @@
                     </tr>
 
                     <tr>
-                        <td>2026-09-04 08:00</td>
+                        <td>2026-09-04 8:00</td>
                         <td>5.42</td>
                         <td>21.67</td>
                         <td>33.35</td>
@@ -261,13 +265,33 @@
                         <td>62.181</td>
                     </tr>
 
+                    <tr>
+                        <td>2026-09-06 8:00</td>
+                        <td>6.21</td>
+                        <td>22.02</td>
+                        <td>33.37</td>
+                        <td>59.46</td>
+                        <td>59.42</td>
+                        <td>62.113</td>
+                    </tr>
+
+                    <tr>
+                        <td>2026-09-07 8:00</td>
+                        <td>5.69</td>
+                        <td>21.94</td>
+                        <td>33.16</td>
+                        <td>59.50</td>
+                        <td>59.77</td>
+                        <td>62.181</td>
+                    </tr>
+
                 </tbody>
             </table>
         </div>
         
         <div class="timestamp">
-            报告生成时间: 2026-09-04 15:28:24<br>
-            数据记录数: 5 条
+            报告生成时间: 2026-09-07 11:30:15<br>
+            数据记录数: 7 条
         </div>
     </div>
     
@@ -276,11 +300,11 @@
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ["2026-08-31 8:00", "2026-09-01 8:00", "2026-09-02 8:00", "2026-09-03 8:00", "2026-09-04 08:00"],
+                labels: ["2026-08-31 8:00", "2026-09-01 8:00", "2026-09-02 8:00", "2026-09-03 8:00", "2026-09-04 8:00", "2026-09-06 8:00", "2026-09-07 8:00"],
                 datasets: [
                 {
                     label: '梧州',
-                    data: [12.81, 12.72, 11.36, 8.12, 5.42],
+                    data: [12.81, 12.72, 11.36, 8.12, 5.42, 6.21, 5.69],
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgb(255, 99, 132)',
                     tension: 0.1,
@@ -288,7 +312,7 @@
                 },
                 {
                     label: '江口',
-                    data: [27.08, 26.32, 24.43, 22.41, 21.67],
+                    data: [27.08, 26.32, 24.43, 22.41, 21.67, 22.02, 21.94],
                     borderColor: 'rgb(54, 162, 235)',
                     backgroundColor: 'rgb(54, 162, 235)',
                     tension: 0.1,
@@ -296,7 +320,7 @@
                 },
                 {
                     label: '贵港',
-                    data: [44.254, 41.645, 36.88, 33.76, 33.35],
+                    data: [44.254, 41.645, 36.88, 33.76, 33.35, 33.37, 33.16],
                     borderColor: 'rgb(255, 205, 86)',
                     backgroundColor: 'rgb(255, 205, 86)',
                     tension: 0.1,
@@ -304,7 +328,7 @@
                 },
                 {
                     label: '武宣',
-                    data: [59.09, 59.12, 58.48, 58.93, 59.48],
+                    data: [59.09, 59.12, 58.48, 58.93, 59.48, 59.46, 59.5],
                     borderColor: 'rgb(75, 192, 192)',
                     backgroundColor: 'rgb(75, 192, 192)',
                     tension: 0.1,
@@ -312,7 +336,7 @@
                 },
                 {
                     label: '来宾',
-                    data: [59.94, 59.39, 59.13, 59.34, 59.57],
+                    data: [59.94, 59.39, 59.13, 59.34, 59.57, 59.42, 59.77],
                     borderColor: 'rgb(153, 102, 255)',
                     backgroundColor: 'rgb(153, 102, 255)',
                     tension: 0.1,
@@ -320,7 +344,7 @@
                 },
                 {
                     label: '峦城',
-                    data: [64.242, 62.939, 62.306, 62.511, 62.181],
+                    data: [64.242, 62.939, 62.306, 62.511, 62.181, 62.113, 62.181],
                     borderColor: 'rgb(255, 159, 64)',
                     backgroundColor: 'rgb(255, 159, 64)',
                     tension: 0.1,
