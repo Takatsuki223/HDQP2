@@ -69,7 +69,7 @@
             background-color: #f8f9fa;
             padding: 10px 10px;
             border-radius: 10px;
-            margin: 20px 0;
+            margin: 10px 0;
             border: 2px solid #ddd;
             display: flex;
             justify-content: flex-start;
@@ -83,16 +83,19 @@
         .status-label {
             font-size: 20px;
             color: #666;
-            margin-right: 5px;
             font-weight: bold;
         }
         .status-value {
             font-size: 40px;
             font-weight: bold;
-            margin-left: 5px;
+        }
+        .warningStatus-value {
+            font-size: 30px;
+            font-weight: bold;
+            color: red;
         }
         .status-red {
-            color: #dc3545;
+            color: red;
         }
         .status-blue {
             color: #007bff;
@@ -127,7 +130,7 @@
         .jk {
             position: absolute;
             top: 52%;
-            left: 71%;  
+            left: 69%;  
         }
         .wx {
             position: absolute;
@@ -178,7 +181,21 @@
             <div class="status-item">
                 <span class="status-label">近2天梧州水位预报：</span>
                 <span class="status-value status-blue">
-                    5.54~5.84m 预计水位变化不大 上下小幅波动    
+                    5.54m~5.84m 预计水位变化不大 上下小幅波动    
+                </span>
+            </div>
+        </div>
+        <div class="status-section">
+            <div class="status-item">
+                <span class="status-label">🚨水库预警：</span>
+                <span class="warningStatus-value">
+                     
+                </span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">🚨站点预警：</span>
+                <span class="warningStatus-value">
+                     
                 </span>
             </div>
         </div>
@@ -198,6 +215,10 @@
             <div class="image-overlay-text status-blue" style="position: absolute; top: 63.8%; left: 28.5%;">============</div>
             <div class="image-overlay-text" style="position: absolute; top: 43%; left: 86.5%;font-size:180%"> </div>
             <div class="image-overlay-text" style="position: absolute; top: 44%; left: 69.67%;font-size:180%"> </div>
+            <div class="image-overlay-text" style="position: absolute; top: 20.5%; left: 37.9%;font-size:180%"> </div>
+            <div class="image-overlay-text" style="position: absolute;top: 20.5%;left: 8.6%;font-size:180%"> </div>
+            <div class="image-overlay-text" style="position: absolute; top: 65%; left: 12.1%;font-size:180%"> </div>
+            <div class="image-overlay-text" style="position: absolute; top: 65%; left: 45%;font-size:180%"> </div>
             <img src="river.png" alt="西江流域图">
         </div>
         
@@ -292,7 +313,7 @@
         </div>
         
         <div class="timestamp">
-            报告生成时间: 2026-09-07 15:25:06<br>
+            报告生成时间: 2026-09-07 17:31:16<br>
             数据记录数: 7 条
         </div>
     </div>

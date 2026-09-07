@@ -96,7 +96,7 @@ def generate_html_report(data):
             background-color: #f8f9fa;
             padding: 10px 10px;
             border-radius: 10px;
-            margin: 20px 0;
+            margin: 10px 0;
             border: 2px solid #ddd;
             display: flex;
             justify-content: flex-start;
@@ -110,16 +110,19 @@ def generate_html_report(data):
         .status-label {{
             font-size: 20px;
             color: #666;
-            margin-right: 5px;
             font-weight: bold;
         }}
         .status-value {{
             font-size: 40px;
             font-weight: bold;
-            margin-left: 5px;
+        }}
+        .warningStatus-value {{
+            font-size: 30px;
+            font-weight: bold;
+            color: red;
         }}
         .status-red {{
-            color: #dc3545;
+            color: red;
         }}
         .status-blue {{
             color: #007bff;
@@ -154,7 +157,7 @@ def generate_html_report(data):
         .jk {{
             position: absolute;
             top: 52%;
-            left: 71%;  
+            left: 69%;  
         }}
         .wx {{
             position: absolute;
@@ -201,26 +204,32 @@ def generate_html_report(data):
         latest_wuzhou_color = sorted_data[-1].get('站点数据',{}).get('梧州', {}).get('颜色', 'blue')
         latest_wuzhou_desc = sorted_data[-1].get('站点数据',{}).get('梧州', {}).get('情况', '暂无数据')
         latest_wuzhou_data = sorted_data[-1].get('站点数据',{}).get('梧州', {}).get('水位', '0')
+        latest_wuzhou_change = sorted_data[-1].get('站点数据',{}).get('梧州', {}).get('变化值', '0')
 
         latest_jiangkou_color = sorted_data[-1].get('站点数据',{}).get('江口', {}).get('颜色', 'blue')
         latest_jiangkou_desc = sorted_data[-1].get('站点数据',{}).get('江口', {}).get('情况', '暂无数据')
         latest_jiangkou_data = sorted_data[-1].get('站点数据',{}).get('江口', {}).get('水位', '0')
+        latest_jiangkou_change = sorted_data[-1].get('站点数据',{}).get('江口', {}).get('变化值', '0')
 
         latest_wuxuan_color = sorted_data[-1].get('站点数据',{}).get('武宣', {}).get('颜色', 'blue')
         latest_wuxuan_desc = sorted_data[-1].get('站点数据',{}).get('武宣', {}).get('情况', '暂无数据')
         latest_wuxuan_data = sorted_data[-1].get('站点数据',{}).get('武宣', {}).get('水位', '0')
+        latest_wuxuan_change = sorted_data[-1].get('站点数据',{}).get('武宣', {}).get('变化值', '0')
 
         latest_laibing_color = sorted_data[-1].get('站点数据',{}).get('来宾', {}).get('颜色', 'blue')
         latest_laibing_desc = sorted_data[-1].get('站点数据',{}).get('来宾', {}).get('情况', '暂无数据')
         latest_laibing_data = sorted_data[-1].get('站点数据',{}).get('来宾', {}).get('水位', '0')
+        latest_laibing_change = sorted_data[-1].get('站点数据',{}).get('来宾', {}).get('变化值', '0')
 
         latest_luancheng_color = sorted_data[-1].get('站点数据',{}).get('峦城', {}).get('颜色', 'blue')
         latest_luancheng_desc = sorted_data[-1].get('站点数据',{}).get('峦城', {}).get('情况', '暂无数据')
         latest_luancheng_data = sorted_data[-1].get('站点数据',{}).get('峦城', {}).get('水位', '0')
+        latest_luancheng_change = sorted_data[-1].get('站点数据',{}).get('峦城', {}).get('变化值', '0')
 
         latest_guigang_color = sorted_data[-1].get('站点数据',{}).get('贵港', {}).get('颜色', 'blue')
         latest_guigang_desc = sorted_data[-1].get('站点数据',{}).get('贵港', {}).get('情况', '暂无数据')
         latest_guigang_data = sorted_data[-1].get('站点数据',{}).get('贵港', {}).get('水位', '0')
+        latest_guigang_change = sorted_data[-1].get('站点数据',{}).get('贵港', {}).get('变化值', '0')
     else:
         latest_upstream_color = 'blue'
         latest_upstream_desc = '暂无数据'
@@ -292,14 +301,58 @@ def generate_html_report(data):
     else:
         latest_wuzhou_pSymbol = '  '
 
+    #站点告警文字
+    station_warning = ' '
+
     #站点是否需要警告符号
     latest_wuzhou_wSymbol = ' '
-    if float(latest_wuzhou_data) > 12:
-        latest_wuzhou_wSymbol = '⚠️'
-
     latest_jiangkou_wSymbol = ' '
-    if float(latest_jiangkou_data) > 25:
+    latest_wuxuan_wSymbol = ' '
+    latest_laibing_wSymbol = ' '
+    latest_luancheng_wSymbol = ' '
+    latest_guigang_wSymbol = ' '
+
+    if float(latest_wuzhou_data) > 18:
+        latest_wuzhou_wSymbol = '🚨'
+        station_warning += '梧州水位很高，'
+    elif float(latest_wuzhou_data) > 13:
+        latest_wuzhou_wSymbol = '⚠️'
+        station_warning += '梧州水位较高，'
+
+    if float(latest_jiangkou_data) > 30:
+        latest_jiangkou_wSymbol = '🚨'
+        station_warning += '江口水位很高，'
+    elif float(latest_jiangkou_data) > 25:
         latest_jiangkou_wSymbol = '⚠️'
+        station_warning += '江口水位较高，'
+
+    if float(latest_wuzhou_change) > 2:
+        latest_wuzhou_wSymbol = '🚨'
+        station_warning += '梧州水位快速上涨，'
+
+    if float(latest_jiangkou_change) > 2:
+        latest_jiangkou_wSymbol = '🚨'
+        station_warning += '江口水位快速上涨，'
+
+    if float(latest_wuxuan_change) > 2:
+        latest_wuxuan_wSymbol = '🚨'
+        station_warning += '武宣水位快速上涨，'
+
+    if float(latest_laibing_change) > 2:
+        latest_laibing_wSymbol = '🚨'
+        station_warning += '来宾水位快速上涨，'
+
+    if float(latest_luancheng_change) > 2:
+        latest_luancheng_wSymbol = '🚨'
+        station_warning += '峦城水位快速上涨，'
+
+    if float(latest_guigang_change) > 2:
+        latest_guigang_wSymbol = '🚨'
+        station_warning += '贵港水位快速上涨，'
+
+    if station_warning != ' ':
+        station_warning += '请及时注意水位变化，加强船舶调度！'
+    
     # 添加状态显示区域
     html_content += f"""
         
@@ -319,7 +372,21 @@ def generate_html_report(data):
             <div class="status-item">
                 <span class="status-label">近2天梧州水位预报：</span>
                 <span class="status-value status-{latest_wuzhou_pColor}">
-                    {latest_wuzhou_p1}~{latest_wuzhou_p2}m 预计水位{latest_wuzhou_pDesc}{latest_wuzhou_pDirection}{latest_wuzhou_pSymbol}  
+                    {latest_wuzhou_p1}m~{latest_wuzhou_p2}m 预计水位{latest_wuzhou_pDesc}{latest_wuzhou_pDirection}{latest_wuzhou_pSymbol}  
+                </span>
+            </div>
+        </div>
+        <div class="status-section">
+            <div class="status-item">
+                <span class="status-label">🚨水库预警：</span>
+                <span class="warningStatus-value">
+                    {station_warning}
+                </span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">🚨站点预警：</span>
+                <span class="warningStatus-value">
+                    {station_warning}
                 </span>
             </div>
         </div>
@@ -339,6 +406,10 @@ def generate_html_report(data):
             <div class="image-overlay-text status-{latest_guigang_color}" style="position: absolute; top: 63.8%; left: 28.5%;">============</div>
             <div class="image-overlay-text" style="position: absolute; top: 43%; left: 86.5%;font-size:180%">{latest_wuzhou_wSymbol}</div>
             <div class="image-overlay-text" style="position: absolute; top: 44%; left: 69.67%;font-size:180%">{latest_jiangkou_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 20.5%; left: 37.9%;font-size:180%">{latest_wuxuan_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute;top: 20.5%;left: 8.6%;font-size:180%">{latest_laibing_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 65%; left: 12.1%;font-size:180%">{latest_luancheng_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 65%; left: 45%;font-size:180%">{latest_guigang_wSymbol}</div>
             <img src="river.png" alt="西江流域图">
         </div>
         
