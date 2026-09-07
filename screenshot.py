@@ -94,7 +94,7 @@ def generate_html_report(data):
         }}
         .status-section {{
             background-color: #f8f9fa;
-            padding: 15px 30px;
+            padding: 10px 10px;
             border-radius: 10px;
             margin: 20px 0;
             border: 2px solid #ddd;
@@ -245,12 +245,16 @@ def generate_html_report(data):
     #计算预报程度描述 如果上游变化幅度绝对值小于0.5为“变化不大”，绝对值在0.5和2直接为“略微”，绝对值在2和4直接为“明显”，绝对值大于4为“大幅”
     if abs(latest_upstream_change) < 0.5:
         latest_wuzhou_pDesc = '变化不大 '
+        latest_upstream_des = '微微'
     elif abs(latest_upstream_change) < 2:
         latest_wuzhou_pDesc = '略微'
+        latest_upstream_des = '略微'
     elif abs(latest_upstream_change) < 4:
         latest_wuzhou_pDesc = '明显'
+        latest_upstream_des = '明显'
     else:
         latest_wuzhou_pDesc = '大幅'
+        latest_upstream_des = '大幅'
 
     #计算预报上升或下降，如果上游变化幅度大于0.5为“上升”，小于-0.5为“下降”，否则为“小幅波动”
     if latest_upstream_change > 0.5:
@@ -263,19 +267,39 @@ def generate_html_report(data):
     #计算预报情况符号，如果上游变化幅度在0.5和2之间用↗︎，在2和4之间用▲，在4以上用⏫︎；如果上游变化幅度在-0.5和-2之间用↘︎，在-2和-4之间用▼，在-4以上用⏬︎，否则用〰︎
     if latest_upstream_change > 0.5 and latest_upstream_change < 2:
         latest_wuzhou_pSymbol = '↗︎'
+        latest_upstream_Symbol = '↗︎'
     elif latest_upstream_change > 2 and latest_upstream_change < 4:
         latest_wuzhou_pSymbol = '▲'
+        latest_upstream_Symbol = '▲'
     elif latest_upstream_change > 4:
         latest_wuzhou_pSymbol = '⏫︎'
+        latest_upstream_Symbol = '⏫︎'
     elif latest_upstream_change < -0.5 and latest_upstream_change > -2:
         latest_wuzhou_pSymbol = '↘︎'
+        latest_upstream_Symbol = '↘︎'
     elif latest_upstream_change < -2 and latest_upstream_change > -4:
         latest_wuzhou_pSymbol = '▼'
+        latest_upstream_Symbol = '▼'
     elif latest_upstream_change < -4:
         latest_wuzhou_pSymbol = '⏬︎'
+        latest_upstream_Symbol = '⏬︎'
+    elif latest_upstream_change > 0 and latest_upstream_change <= 0.5:
+        latest_upstream_Symbol = '↗︎'
+        latest_wuzhou_pSymbol = '  '
+    elif latest_upstream_change < 0 and latest_upstream_change >= -0.5:
+        latest_upstream_Symbol = '↘︎'
+        latest_wuzhou_pSymbol = '  '
     else:
         latest_wuzhou_pSymbol = '  '
 
+    #站点是否需要警告符号
+    latest_wuzhou_wSymbol = ' '
+    if float(latest_wuzhou_data) > 12:
+        latest_wuzhou_wSymbol = '⚠️'
+
+    latest_jiangkou_wSymbol = ' '
+    if float(latest_jiangkou_data) > 25:
+        latest_jiangkou_wSymbol = '⚠️'
     # 添加状态显示区域
     html_content += f"""
         
@@ -283,7 +307,7 @@ def generate_html_report(data):
             <div class="status-item">
                 <span class="status-label">上游整体情况：</span>
                 <span class="status-value status-{latest_upstream_color}">
-                    {latest_upstream_desc}
+                    水位{latest_upstream_des}{latest_upstream_desc}{latest_upstream_Symbol}
                 </span>
             </div>
             <div class="status-item">
@@ -313,6 +337,8 @@ def generate_html_report(data):
             <div class="image-overlay-text status-{latest_luancheng_color}" style="position: absolute; top: 63.8%; left: 6%;">====</div>
             <div class="image-overlay-text gg status-{latest_guigang_color}">{latest_guigang_data}m{latest_guigang_desc}</div>
             <div class="image-overlay-text status-{latest_guigang_color}" style="position: absolute; top: 63.8%; left: 28.5%;">============</div>
+            <div class="image-overlay-text" style="position: absolute; top: 43%; left: 86.5%;font-size:180%">{latest_wuzhou_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 44%; left: 69.67%;font-size:180%">{latest_jiangkou_wSymbol}</div>
             <img src="river.png" alt="西江流域图">
         </div>
         
@@ -339,12 +365,12 @@ def generate_html_report(data):
         html_content += f"""
                     <tr>
                         <td>{record['时间']}</td>
-                        <td>{station_data.get('梧州', {}).get('水位', '-')}</td>
-                        <td>{station_data.get('江口', {}).get('水位', '-')}</td>
-                        <td>{station_data.get('贵港', {}).get('水位', '-')}</td>
-                        <td>{station_data.get('武宣', {}).get('水位', '-')}</td>
-                        <td>{station_data.get('来宾', {}).get('水位', '-')}</td>
-                        <td>{station_data.get('峦城', {}).get('水位', '-')}</td>
+                        <td>{station_data.get('梧州', {}).get('水位', '-')}{station_data.get('梧州', {}).get('情况', ' ')}</td>
+                        <td>{station_data.get('江口', {}).get('水位', '-')}{station_data.get('江口', {}).get('情况', ' ')}</td>
+                        <td>{station_data.get('贵港', {}).get('水位', '-')}{station_data.get('贵港', {}).get('情况', ' ')}</td>
+                        <td>{station_data.get('武宣', {}).get('水位', '-')}{station_data.get('武宣', {}).get('情况', ' ')}</td>
+                        <td>{station_data.get('来宾', {}).get('水位', '-')}{station_data.get('来宾', {}).get('情况', ' ')}</td>
+                        <td>{station_data.get('峦城', {}).get('水位', '-')}{station_data.get('峦城', {}).get('情况', ' ')}</td>
                     </tr>
 """
 
@@ -471,13 +497,21 @@ def parse_water_level_data(html_content, publish_date):
                     # 将变化值转换为数字：1表示上升，0表示持平或下降
                     try:
                         change_num = float(change_value)
-                        if change_num > 0:
+                        if change_num > 0 and change_num < 2:
                             change_value_num = 1  # 上升
                             change_des = "▲"
                             color = "red"
-                        else:
+                        elif change_num >= 2:
+                            change_value_num = 0  # 大幅上升
+                            change_des = "⏫︎"
+                            color = "red"
+                        elif change_num <= 0 and change_num > -2:
                             change_value_num = 0  # 持平或下降
                             change_des = "▼"
+                            color = "blue"
+                        else:
+                            change_value_num <= -2# 大幅下降
+                            change_des = "⏬︎"
                             color = "blue"
                     except (ValueError, TypeError):
                         change_value_num = 0  # 无法解析时默认为0
@@ -624,19 +658,19 @@ def main():
             
             # 根据上游变化和值决定整体情况
             if upstream_change_sum == 0:
-                upstream_status = "水位明显下降⏬︎"
+                upstream_status = "下降"
                 upstream_color = "blue"
             elif upstream_change_sum == 1:
-                upstream_status = "水位下降 ▼"
+                upstream_status = "下降"
                 upstream_color = "blue"
             elif upstream_change_sum == 2:
-                upstream_status = "水位略有上升▲"
+                upstream_status = "上升"
                 upstream_color = "red"
             elif upstream_change_sum == 3:
-                upstream_status = "水位上升▲"
+                upstream_status = "上升"
                 upstream_color = "red"
             else:  # 4或5
-                upstream_status = "水位明显上升⏫︎"
+                upstream_status = "上升"
                 upstream_color = "red"
             
             record_data = {
