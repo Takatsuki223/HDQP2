@@ -312,43 +312,104 @@ def generate_html_report(data):
     latest_luancheng_wSymbol = ' '
     latest_guigang_wSymbol = ' '
 
-    if float(latest_wuzhou_data) > 18:
+    #站点是否需要超警戒线警告
+    s1 = 0
+    if float(latest_wuzhou_data) >= 18.5:
         latest_wuzhou_wSymbol = '🚨'
-        station_warning += '梧州水位很高，'
-    elif float(latest_wuzhou_data) > 13:
+        station_warning += '梧州'
+        s1 = 1
+
+    if float(latest_jiangkou_data) >= 31.7:
+        latest_jiangkou_wSymbol = '🚨'
+        if s1 != 0:
+            station_warning += '、'
+        station_warning += '江口'
+        s1 = 1
+
+    if float(latest_guigang_data) >= 41.2:
+        latest_guigang_wSymbol = '🚨'
+        if s1 != 0:
+            station_warning += '、'
+        station_warning += '贵港'
+        s1 = 1
+
+    if float(latest_luancheng_data) >= 64.2:
+        latest_luancheng_wSymbol = '🚨'
+        if s1 != 0:
+            station_warning += '、'
+        station_warning += '峦城'
+        s1 = 1
+
+    if float(latest_wuxuan_data) >= 61.4:
+        latest_wuxuan_wSymbol = '🚨'
+        if s1 != 0:
+            station_warning += '、'
+        station_warning += '武宣'
+        s1 = 1
+
+    if float(latest_laibing_data) >= 62:
+        latest_laibing_wSymbol = '🚨'
+        if s1 != 0:
+            station_warning += '、'
+        station_warning += '来宾'
+        s1 = 1
+
+    if s1 != 0:
+        station_warning += '水位超警！'
+
+
+    if float(latest_wuzhou_data) >= 13 and float(latest_wuzhou_data) < 18.5:
         latest_wuzhou_wSymbol = '⚠️'
         station_warning += '梧州水位较高，'
 
-    if float(latest_jiangkou_data) > 30:
-        latest_jiangkou_wSymbol = '🚨'
-        station_warning += '江口水位很高，'
-    elif float(latest_jiangkou_data) > 25:
+    if float(latest_jiangkou_data) >= 27 and float(latest_jiangkou_data) < 31.7:
         latest_jiangkou_wSymbol = '⚠️'
         station_warning += '江口水位较高，'
 
+    #站点是否需要水位快速上涨警告
+    s3 = 0
     if float(latest_wuzhou_change) > 2:
         latest_wuzhou_wSymbol = '🚨'
-        station_warning += '梧州水位快速上涨，'
+        station_warning += '梧州'
+        s3 = 1
 
     if float(latest_jiangkou_change) > 2:
         latest_jiangkou_wSymbol = '🚨'
-        station_warning += '江口水位快速上涨，'
+        if s3 != 0:
+            station_warning += '、'
+        station_warning += '江口'
+        s3 = 1
 
     if float(latest_wuxuan_change) > 2:
         latest_wuxuan_wSymbol = '🚨'
-        station_warning += '武宣水位快速上涨，'
+        if s3 != 0:
+            station_warning += '、'
+        station_warning += '武宣'
+        s3 = 1
 
     if float(latest_laibing_change) > 2:
         latest_laibing_wSymbol = '🚨'
-        station_warning += '来宾水位快速上涨，'
+        if s3 != 0:
+            station_warning += '、'
+        station_warning += '来宾'
+        s3 = 1
 
     if float(latest_luancheng_change) > 2:
         latest_luancheng_wSymbol = '🚨'
-        station_warning += '峦城水位快速上涨，'
+        if s3 != 0:
+            station_warning += '、'
+        station_warning += '峦城'
+        s3 = 1
 
     if float(latest_guigang_change) > 2:
         latest_guigang_wSymbol = '🚨'
-        station_warning += '贵港水位快速上涨，'
+        if s3 != 0:
+            station_warning += '、'
+        station_warning += '贵港'
+        s3 = 1
+
+    if s3 != 0:
+        station_warning += '水位快速上涨！'
 
     if station_warning != ' ':
         station_warning += '请及时注意水位变化，加强船舶调度！'
@@ -380,7 +441,7 @@ def generate_html_report(data):
             <div class="status-item">
                 <span class="status-label">🚨水库预警：</span>
                 <span class="warningStatus-value">
-                    {station_warning}
+                    
                 </span>
             </div>
             <div class="status-item">
@@ -404,12 +465,12 @@ def generate_html_report(data):
             <div class="image-overlay-text status-{latest_luancheng_color}" style="position: absolute; top: 63.8%; left: 6%;">====</div>
             <div class="image-overlay-text gg status-{latest_guigang_color}">{latest_guigang_data}m{latest_guigang_desc}</div>
             <div class="image-overlay-text status-{latest_guigang_color}" style="position: absolute; top: 63.8%; left: 28.5%;">============</div>
-            <div class="image-overlay-text" style="position: absolute; top: 43%; left: 86.5%;font-size:180%">{latest_wuzhou_wSymbol}</div>
-            <div class="image-overlay-text" style="position: absolute; top: 44%; left: 69.67%;font-size:180%">{latest_jiangkou_wSymbol}</div>
-            <div class="image-overlay-text" style="position: absolute; top: 20.5%; left: 37.9%;font-size:180%">{latest_wuxuan_wSymbol}</div>
-            <div class="image-overlay-text" style="position: absolute;top: 20.5%;left: 8.6%;font-size:180%">{latest_laibing_wSymbol}</div>
-            <div class="image-overlay-text" style="position: absolute; top: 65%; left: 12.1%;font-size:180%">{latest_luancheng_wSymbol}</div>
-            <div class="image-overlay-text" style="position: absolute; top: 65%; left: 45%;font-size:180%">{latest_guigang_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 42.5%; left: 86.5%;font-size:200%">{latest_wuzhou_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 42.5%; left: 69.67%;font-size:200%">{latest_jiangkou_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 20%; left: 37.9%;font-size:200%">{latest_wuxuan_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute;top: 20%;left: 8.6%;font-size:200%">{latest_laibing_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 65%; left: 12%;font-size:200%">{latest_luancheng_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 65%; left: 45%;font-size:200%">{latest_guigang_wSymbol}</div>
             <img src="river.png" alt="西江流域图">
         </div>
         
@@ -717,7 +778,7 @@ def main():
         
         # 添加或更新数据
         if new_data_time:
-            # 计算上游整体情况（来宾、武宣、贵港、峦城）
+            # 计算上游整体情况（来宾、武宣、贵港、峦城、江口）
             upstream_stations = ['来宾', '武宣', '贵港', '峦城', '江口']
             upstream_change_sum = 0
             up_change_value_sum = 0
