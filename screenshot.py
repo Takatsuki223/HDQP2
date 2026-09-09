@@ -809,6 +809,33 @@ def parse_reservoir_data(html_content, publish_date):
 
 
 def main():
+    import sys
+    import os
+    import shutil
+
+    # 打包后的exe处理chromium路径
+    if getattr(sys, 'frozen', False):
+        # 打包后的exe
+        base_path = sys._MEIPASS
+        packed_chromium = os.path.join(base_path, 'ms-playwright', 'chromium-1234')
+
+        # Playwright期望的chromium路径
+        temp_dir = os.path.join(os.environ.get('LOCALAPPDATA', ''), 'ms-playwright')
+        target_chromium = os.path.join(temp_dir, 'chromium-1234')
+
+        # 如果打包了chromium，且目标位置不存在，则复制过去
+        if os.path.exists(packed_chromium) and not os.path.exists(target_chromium):
+            print("正在复制chromium浏览器驱动...")
+            try:
+                os.makedirs(temp_dir, exist_ok=True)
+                shutil.copytree(packed_chromium, target_chromium)
+                print("chromium浏览器驱动复制完成！")
+            except Exception as e:
+                print(f"复制chromium失败: {e}")
+
+        # 设置Playwright浏览器路径
+        os.environ['PLAYWRIGHT_BROWSERS_PATH'] = temp_dir
+
     with sync_playwright() as p:
         # 启动浏览器，headless=False 表示浏览器窗口可见
         browser = p.chromium.launch(headless=False)
