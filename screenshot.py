@@ -365,11 +365,11 @@ def generate_html_report(data):
         station_warning += '水位超警！'
 
 
-    if float(latest_wuzhou_data) >= 13 and float(latest_wuzhou_data) < 18.5:
+    if float(latest_wuzhou_data) >= 12 and float(latest_wuzhou_data) < 18.5:
         latest_wuzhou_wSymbol = '⚠️'
         station_warning += '梧州水位较高，'
 
-    if float(latest_jiangkou_data) >= 27 and float(latest_jiangkou_data) < 31.7:
+    if float(latest_jiangkou_data) >= 26 and float(latest_jiangkou_data) < 31.7:
         latest_jiangkou_wSymbol = '⚠️'
         station_warning += '江口水位较高，'
 
@@ -427,41 +427,24 @@ def generate_html_report(data):
     latest_datengxia_wSymbol = ' '
     latest_guiping_wSymbol = ' '
     latest_changzhou_wSymbol = ' '
-    #水库是否需要水位警告符号
-    r1 = 0
-    if float(latest_datengxia_data) >= 60:
-        #<KEY> = '🚨'
-        reservoir_warning += '大藤峡枢纽'
-        r1 = 1
-    if float(latest_guiping_data) >= 31.5:
-        #<KEY> = '🚨'
-        if r1 != 0:
-            reservoir_warning += '、'
-        reservoir_warning += '桂平枢纽'
-        r1 = 1
-    if float(latest_changzhou_data) >= 31:
-        #<KEY> = '🚨'
-        if r1 != 0:
-            reservoir_warning += '、'
-        reservoir_warning += '长洲枢纽'
-        r1 = 1
-    if r1 != 0:
-        reservoir_warning += '水位高，可能开闸放水！'
-
+    latest_datengxia_color = 'blue'
+    latest_guiping_color = 'blue'
+    latest_changzhou_color = 'blue'
+ 
     #水库是否需要开闸预警
     r2 = 0
-    if float(latest_datengxia_fs) == 0:
-        latest_datengxia_wSymbol = '🌊'
+    if float(latest_datengxia_fs) == 1:
+        latest_datengxia_wSymbol += '🌊'
         reservoir_warning += '大藤峡枢纽'
         r2 = 1
     if float(latest_guiping_fs) == 1:
-        latest_guiping_wSymbol = '🌊'
+        latest_guiping_wSymbol += '🌊'
         if r2 != 0:
             reservoir_warning += '、'
         reservoir_warning += '桂平枢纽'
         r2 = 1
     if float(latest_changzhou_fs) == 1:
-        latest_changzhou_wSymbol = '🌊'
+        latest_changzhou_wSymbol += '🌊'
         if r2 != 0:
             reservoir_warning += '、'
         reservoir_warning += '长洲枢纽'
@@ -469,6 +452,39 @@ def generate_html_report(data):
     if r2 != 0:
         reservoir_warning += '出库流量更大，可能正在放水。'
 
+     #水库是否需要水位警告符号
+    r1 = 0
+    if float(latest_datengxia_data) >= 60:
+        latest_datengxia_wSymbol += '🚨'
+        reservoir_warning += '大藤峡枢纽'
+        latest_datengxia_color = 'red'
+        r1 = 1
+    if float(latest_guiping_data) >= 31.5:
+        latest_guiping_wSymbol += '🚨'
+        if r1 != 0:
+            reservoir_warning += '、'
+        reservoir_warning += '桂平枢纽'
+        latest_guiping_color = 'red'
+        r1 = 1
+    if float(latest_changzhou_data) >= 30:
+        latest_changzhou_wSymbol += '🚨'
+        if r1 != 0:
+            reservoir_warning += '、'
+        reservoir_warning += '长洲枢纽'
+        latest_changzhou_color = 'red'
+        r1 = 1
+    if r1 != 0:
+        reservoir_warning += '水位高，可能开闸放水！'
+
+    if latest_datengxia_wSymbol == ' ':
+        latest_datengxia_wSymbol += '正常'
+
+    if latest_guiping_wSymbol == ' ':
+        latest_guiping_wSymbol += '正常'
+
+    if latest_changzhou_wSymbol == ' ':
+        latest_changzhou_wSymbol += '正常'
+    
     if reservoir_warning != ' ':
         reservoir_warning += '请及时注意水位变化，加强船舶调度！'
     
@@ -479,7 +495,7 @@ def generate_html_report(data):
             <div class="status-item">
                 <span class="status-label">上游整体情况：</span>
                 <span class="status-value status-{latest_upstream_color}">
-                    水位{latest_upstream_des}{latest_upstream_desc}{latest_upstream_Symbol}
+                    水位{latest_upstream_des}{latest_upstream_desc}
                 </span>
             </div>
             <div class="status-item">
@@ -529,9 +545,12 @@ def generate_html_report(data):
             <div class="image-overlay-text" style="position: absolute; top: 20%; left: 8.6%;font-size:200%">{latest_laibing_wSymbol}</div>
             <div class="image-overlay-text" style="position: absolute; top: 65%; left: 12%;font-size:200%">{latest_luancheng_wSymbol}</div>
             <div class="image-overlay-text" style="position: absolute; top: 65%; left: 45%;font-size:200%">{latest_guigang_wSymbol}</div>
-            <div class="image-overlay-text" style="position: absolute; top: 42.5%; left: 86.5%;font-size:180%;writing-mode: vertical-rl;text-orientation: mixed">{latest_datengxia_wSymbol}</div>
-            <div class="image-overlay-text" style="position: absolute; top: 42.5%; left: 69.67%;font-size:180%;writing-mode: vertical-rl;text-orientation: mixed">{latest_guiping_wSymbol}</div>
-            <div class="image-overlay-text" style="position: absolute; top: 43%; left: 79%;font-size: 180%;writing-mode: vertical-rl;text-orientation: mixed">{latest_changzhou_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute;top: 17%;left: 53.75%;font-size: 180%;writing-mode: vertical-rl;text-orientation: mixed;justify-content: center;align-items: center;display: flex;height: 20%;color:blue">{latest_datengxia_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 59.9%;left: 56.1%;font-size: 180%;writing-mode: vertical-rl;text-orientation: mixed;justify-content: center;align-items: center;display: flex;height: 20%;color:blue">{latest_guiping_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 39%; left: 79%;font-size: 180%;writing-mode: vertical-rl;text-orientation: mixed;justify-content: center;align-items: center;display: flex; height: 20%;color:blue">{latest_changzhou_wSymbol}</div>
+            <div class="image-overlay-text status-{latest_datengxia_color}" style="position: absolute;top: -0.5%;left: 53.8%;font-size: 180%;">{latest_datengxia_data}m</div>
+            <div class="image-overlay-text status-{latest_guiping_color}" style="position: absolute;top: 88%;left: 56%;font-size: 180%;">{latest_guiping_data}m</div>
+            <div class="image-overlay-text status-{latest_changzhou_color}" style="position: absolute;top: 3%;left: 79%;font-size: 180%;">{latest_changzhou_data}m</div>
             <img src="river.jpg" alt="西江流域图">
         </div>
         
@@ -939,19 +958,19 @@ def main():
             
             # 根据上游变化和值决定整体情况
             if upstream_change_sum == 0:
-                upstream_status = "下降"
+                upstream_status = "下降⏬︎"
                 upstream_color = "blue"
             elif upstream_change_sum == 1:
-                upstream_status = "下降"
+                upstream_status = "下降▼"
                 upstream_color = "blue"
             elif upstream_change_sum == 2:
-                upstream_status = "上升"
+                upstream_status = "上升↗︎"
                 upstream_color = "red"
             elif upstream_change_sum == 3:
-                upstream_status = "上升"
+                upstream_status = "上升▲"
                 upstream_color = "red"
             else:  # 4或5
-                upstream_status = "上升"
+                upstream_status = "上升⏫︎"
                 upstream_color = "red"
             
             record_data = {
