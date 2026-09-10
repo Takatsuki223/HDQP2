@@ -236,12 +236,15 @@ def generate_html_report(data):
 
         latest_datengxia_data = sorted_data[-1].get('枢纽数据',{}).get('大藤峡枢纽', {}).get('上游水位', '0')
         latest_datengxia_fs = sorted_data[-1].get('枢纽数据',{}).get('大藤峡枢纽', {}).get('是否放水', '0')
+        latest_datengxia_ckll = sorted_data[-1].get('枢纽数据',{}).get('大藤峡枢纽', {}).get('出库流量', '0')
 
         latest_guiping_data = sorted_data[-1].get('枢纽数据',{}).get('桂平船闸', {}).get('上游水位', '0')
         latest_guiping_fs = sorted_data[-1].get('枢纽数据',{}).get('桂平船闸', {}).get('是否放水', '0')
+        latest_guiping_ckll = sorted_data[-1].get('枢纽数据',{}).get('桂平船闸', {}).get('出库流量', '0')
 
         latest_changzhou_data = sorted_data[-1].get('枢纽数据',{}).get('长洲船闸', {}).get('上游水位', '0')
         latest_changzhou_fs = sorted_data[-1].get('枢纽数据',{}).get('长洲船闸', {}).get('是否放水', '0')
+        latest_changzhou_ckll = sorted_data[-1].get('枢纽数据',{}).get('长洲船闸', {}).get('出库流量', '0')
 
     #计算预报值 如果变化幅度过小就上下略微波动 否则梧州预计变化值在上游最新总变化值0.35到0.65之间
     latest_wuzhou_data_float = float(latest_wuzhou_data)  # 转换为浮点数
@@ -323,55 +326,72 @@ def generate_html_report(data):
     s1 = 0
     if float(latest_wuzhou_data) >= 18.5:
         latest_wuzhou_wSymbol = '🚨'
-        station_warning += '梧州'
+        station_warning += '梧州（已超警'
+        station_warning += str(float(latest_wuzhou_data)-18.5)
+        station_warning += '米）'
         s1 = 1
 
     if float(latest_jiangkou_data) >= 31.7:
         latest_jiangkou_wSymbol = '🚨'
         if s1 != 0:
             station_warning += '、'
-        station_warning += '江口'
+        station_warning += '江口（已超警'
+        station_warning += str(float(latest_jiangkou_data)-31.7)
+        station_warning += '米）'
         s1 = 1
 
     if float(latest_guigang_data) >= 41.2:
         latest_guigang_wSymbol = '🚨'
         if s1 != 0:
             station_warning += '、'
-        station_warning += '贵港'
+        station_warning += '贵港（已超警'
+        station_warning += str(float(latest_guigang_data)-41.2)
+        station_warning += '米）'
         s1 = 1
 
     if float(latest_luancheng_data) >= 64.2:
         latest_luancheng_wSymbol = '🚨'
         if s1 != 0:
             station_warning += '、'
-        station_warning += '峦城'
+        station_warning += '峦城（已超警'
+        station_warning += str(float(latest_luancheng_data)-64.2)
+        station_warning += '米）'
         s1 = 1
 
     if float(latest_wuxuan_data) >= 61.4:
         latest_wuxuan_wSymbol = '🚨'
         if s1 != 0:
             station_warning += '、'
-        station_warning += '武宣'
+        station_warning += '武宣（已超警'
+        station_warning += str(float(latest_wuxuan_data)-61.4)
+        station_warning += '米）'
         s1 = 1
 
     if float(latest_laibing_data) >= 62:
         latest_laibing_wSymbol = '🚨'
         if s1 != 0:
             station_warning += '、'
-        station_warning += '来宾'
+        station_warning += '来宾（已超警'
+        station_warning += str(float(latest_laibing_data)-62)
+        station_warning += '米）'
         s1 = 1
 
     if s1 != 0:
-        station_warning += '水位超警！'
+        station_warning += '站点水位已超警！'
 
-
-    if float(latest_wuzhou_data) >= 12 and float(latest_wuzhou_data) < 18.5:
+    s2 = 0
+    if float(latest_wuzhou_data) >= 13 and float(latest_wuzhou_data) < 18.5:
         latest_wuzhou_wSymbol = '⚠️'
-        station_warning += '梧州水位较高，'
+        station_warning += '梧州（水位已超过13米）'
 
     if float(latest_jiangkou_data) >= 26 and float(latest_jiangkou_data) < 31.7:
         latest_jiangkou_wSymbol = '⚠️'
-        station_warning += '江口水位较高，'
+        if s2 != 0:
+            station_warning += '、'
+        station_warning += '江口（水位已超过26米）'
+
+    if s2 != 0:
+        station_warning += '水位较高，注意警戒！'
 
     #站点是否需要水位快速上涨警告
     s3 = 0
@@ -416,7 +436,7 @@ def generate_html_report(data):
         s3 = 1
 
     if s3 != 0:
-        station_warning += '水位快速上涨！'
+        station_warning += '水位快速上涨（日涨幅超2米）！'
 
     if station_warning != ' ':
         station_warning += '请及时注意水位变化，加强船舶调度！'
@@ -433,24 +453,36 @@ def generate_html_report(data):
  
     #水库是否需要开闸预警
     r2 = 0
-    if float(latest_datengxia_fs) == 1:
+    if float(latest_datengxia_fs) == 1 or float(latest_datengxia_ckll) >= 12000:
         latest_datengxia_wSymbol += '🌊'
         reservoir_warning += '大藤峡枢纽'
+        if float(latest_datengxia_ckll) >= 12000:
+            reservoir_warning += '(出库流量达'
+            reservoir_warning += latest_datengxia_ckll
+            reservoir_warning += 'm³/秒，较大)'
         r2 = 1
-    if float(latest_guiping_fs) == 1:
+    if float(latest_guiping_fs) == 1 or float(latest_guiping_ckll) >= 12000:
         latest_guiping_wSymbol += '🌊'
         if r2 != 0:
             reservoir_warning += '、'
         reservoir_warning += '桂平枢纽'
+        if float(latest_guiping_ckll) >= 12000:
+            reservoir_warning += '(出库流量达'
+            reservoir_warning += latest_guiping_ckll
+            reservoir_warning += 'm³/秒，较大)'
         r2 = 1
-    if float(latest_changzhou_fs) == 1:
+    if float(latest_changzhou_fs) == 1 or float(latest_changzhou_ckll) >= 15000:
         latest_changzhou_wSymbol += '🌊'
         if r2 != 0:
             reservoir_warning += '、'
         reservoir_warning += '长洲枢纽'
+        if float(latest_changzhou_ckll) >= 15000:
+            reservoir_warning += '(出库流量达'
+            reservoir_warning += latest_changzhou_ckll
+            reservoir_warning += 'm³/秒，较大)'
         r2 = 1
     if r2 != 0:
-        reservoir_warning += '出库流量更大，可能正在放水。'
+        reservoir_warning += '出库流量更大，可能正在放水，对下游水位会有额外影响。'
 
      #水库是否需要水位警告符号
     r1 = 0
@@ -528,9 +560,9 @@ def generate_html_report(data):
         
         <div class="image-section">
             <div class="image-overlay-text wz status-{latest_wuzhou_color}">{latest_wuzhou_data}m{latest_wuzhou_desc}</div>
-            <div class="image-overlay-text status-{latest_wuzhou_color}" style="position: absolute;top: 41.25%;left: 86.7%;">====</div>
+            <div class="image-overlay-text status-{latest_wuzhou_color}" style="position: absolute;top: 41.25%;left: 86%;">====</div>
             <div class="image-overlay-text jk status-{latest_jiangkou_color}">{latest_jiangkou_data}m{latest_jiangkou_desc}</div>
-            <div class="image-overlay-text status-{latest_jiangkou_color}" style="position: absolute; top: 41.4%; left: 64%;">==</div>
+            <div class="image-overlay-text status-{latest_jiangkou_color}" style="position: absolute; top: 41.4%; left: 63.85%;">==</div>
             <div class="image-overlay-text wx status-{latest_wuxuan_color}">{latest_wuxuan_data}m{latest_wuxuan_desc}</div>
             <div class="image-overlay-text status-{latest_wuxuan_color}" style="position: absolute; top: 18.9%; left: 23.2%;">===========</div>
             <div class="image-overlay-text lb status-{latest_laibing_color}">{latest_laibing_data}m{latest_laibing_desc}</div>
@@ -539,8 +571,8 @@ def generate_html_report(data):
             <div class="image-overlay-text status-{latest_luancheng_color}" style="position: absolute; top: 63.8%; left: 6%;">====</div>
             <div class="image-overlay-text gg status-{latest_guigang_color}">{latest_guigang_data}m{latest_guigang_desc}</div>
             <div class="image-overlay-text status-{latest_guigang_color}" style="position: absolute; top: 63.8%; left: 28.5%;">============</div>
-            <div class="image-overlay-text" style="position: absolute; top: 42.5%; left: 86.5%;font-size:200%">{latest_wuzhou_wSymbol}</div>
-            <div class="image-overlay-text" style="position: absolute; top: 42.5%; left: 69.67%;font-size:200%">{latest_jiangkou_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 42.4%; left: 92.2%;font-size:200%">{latest_wuzhou_wSymbol}</div>
+            <div class="image-overlay-text" style="position: absolute; top: 42.4%; left: 66.9%;font-size:200%">{latest_jiangkou_wSymbol}</div>
             <div class="image-overlay-text" style="position: absolute; top: 20%; left: 37.9%;font-size:200%">{latest_wuxuan_wSymbol}</div>
             <div class="image-overlay-text" style="position: absolute; top: 20%; left: 8.6%;font-size:200%">{latest_laibing_wSymbol}</div>
             <div class="image-overlay-text" style="position: absolute; top: 65%; left: 12%;font-size:200%">{latest_luancheng_wSymbol}</div>
